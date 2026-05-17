@@ -1,8 +1,6 @@
-"""Pojedinačna poruka u razgovoru."""
 from datetime import datetime
 
 from extensions import db
-
 
 class Poruka(db.Model):
     __tablename__ = "poruka"

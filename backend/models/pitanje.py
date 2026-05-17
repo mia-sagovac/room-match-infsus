@@ -1,6 +1,4 @@
-"""Banka pitanja za upitnik kompatibilnosti."""
 from extensions import db
-
 
 class Pitanje(db.Model):
     __tablename__ = "pitanje"

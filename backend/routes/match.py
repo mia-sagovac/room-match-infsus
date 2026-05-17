@@ -1,7 +1,3 @@
-"""Match — preporuke, kreiranje, prihvaćanje/odbijanje.
-
-UC: Pregled preporuka, Filtriranje, Matchanje.
-"""
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_, and_
@@ -14,13 +10,11 @@ bp = Blueprint("match", __name__, url_prefix="/api/match")
 
 DOZVOLJENI_STATUSI = {"predlozen", "prihvacen", "odbijen", "istekao"}
 
-
 def _trenutni_id() -> int:
     return int(get_jwt_identity())
 
-
 def _bool_filter(value: str | None) -> bool | None:
-    """'true'/'1'/'yes' → True, 'false'/'0'/'no' → False, ostalo → None."""
+
     if value is None:
         return None
     v = value.strip().lower()
@@ -30,16 +24,10 @@ def _bool_filter(value: str | None) -> bool | None:
         return False
     return None
 
-
 @bp.get("/preporuke")
 @jwt_required()
 def preporuke():
-    """Vraća listu kompatibilnih korisnika sortiranu po postotku.
 
-    Query parametri (svi opcionalni — UC: Filtriranje):
-      grad, kvart, min_cijena, max_cijena, ritam, max_pusac (bool),
-      min_urednost (1..5), min_postotak (0..100), limit (default 20)
-    """
     ja_id = _trenutni_id()
     ja = db.session.get(Korisnik, ja_id)
     if not ja:
@@ -66,6 +54,7 @@ def preporuke():
 
     rezultati = []
     for k in kandidati:
+
         if f_grad and (not k.profil or (k.profil.grad or "").lower() != f_grad.lower()):
             continue
         if f_kvart and (not k.profil or (k.profil.kvart or "").lower() != f_kvart.lower()):
@@ -99,11 +88,10 @@ def preporuke():
     rezultati.sort(key=lambda r: r["postotak_kompatibilnosti"], reverse=True)
     return jsonify(rezultati[:limit])
 
-
 @bp.get("")
 @jwt_required()
 def moji_matchevi():
-    """Sve match-eve u kojima sudjelujem."""
+
     ja_id = _trenutni_id()
     matchevi = (MatchKorisnika.query
                 .filter(or_(MatchKorisnika.korisnik1_id == ja_id,
@@ -112,11 +100,10 @@ def moji_matchevi():
                 .all())
     return jsonify([_obogati_match(m, ja_id) for m in matchevi])
 
-
 @bp.post("")
 @jwt_required()
 def kreiraj_match():
-    """Predloži match s drugim korisnikom (state S3 → S4)."""
+
     data = request.get_json(silent=True) or {}
     drugi_id = data.get("korisnik_id")
     if not drugi_id:
@@ -149,11 +136,10 @@ def kreiraj_match():
     db.session.commit()
     return jsonify(_obogati_match(match, ja_id)), 201
 
-
 @bp.patch("/<int:match_id>")
 @jwt_required()
 def azuriraj_status_matcha(match_id: int):
-    """Prihvati / odbij match. Ako 'prihvacen' → kreira razgovor (S4→S5)."""
+
     data = request.get_json(silent=True) or {}
     novi_status = data.get("status")
     if novi_status not in DOZVOLJENI_STATUSI:
@@ -175,9 +161,8 @@ def azuriraj_status_matcha(match_id: int):
     db.session.commit()
     return jsonify(_obogati_match(match, ja_id))
 
-
 def _obogati_match(match: MatchKorisnika, ja_id: int) -> dict:
-    """Dodaj podatke o 'drugom' korisniku za UI."""
+
     drugi_id = match.korisnik2_id if match.korisnik1_id == ja_id else match.korisnik1_id
     drugi = db.session.get(Korisnik, drugi_id)
 

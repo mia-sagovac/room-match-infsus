@@ -6,9 +6,8 @@ from models import (
     Korisnik, Profil, Preferencija, Upitnik, OdgovorUpitnika, Pitanje,
 )
 
-
 def _profil_profil_score(p1: Profil, p2: Profil) -> float:
-    """0..30 — koliko su navike i stilovi sami po sebi slični."""
+
     if not p1 or not p2:
         return 0.0
 
@@ -42,9 +41,8 @@ def _profil_profil_score(p1: Profil, p2: Profil) -> float:
 
     return score
 
-
 def _pref_profil_score(pref: Preferencija | None, profil: Profil | None) -> float:
-    """0..15 — koliko `profil` zadovoljava `pref` druge strane."""
+
     if not pref or not profil:
         return 7.5
 
@@ -69,6 +67,7 @@ def _pref_profil_score(pref: Preferencija | None, profil: Profil | None) -> floa
         if profil.urednost >= pref.min_urednost:
             score += 4
         else:
+
             diff = pref.min_urednost - profil.urednost
             score += max(0, 4 - 2 * diff)
     else:
@@ -84,17 +83,15 @@ def _pref_profil_score(pref: Preferencija | None, profil: Profil | None) -> floa
 
     return score
 
-
 def _najnoviji_upitnik(upitnici: Iterable[Upitnik]) -> Upitnik | None:
     upitnici = list(upitnici or [])
     if not upitnici:
         return None
     return max(upitnici, key=lambda u: (u.verzija, u.datum_ispunjavanja))
 
-
 def _slicnost_odgovora(o1: OdgovorUpitnika, o2: OdgovorUpitnika,
                        pitanje: Pitanje) -> float:
-    """0..1 sličnost dvaju odgovora na isto pitanje, ovisno o tip_odgovora."""
+
     v1, v2 = o1.vrijednost, o2.vrijednost
 
     if pitanje.tip_odgovora == "skala_1_5":
@@ -112,9 +109,8 @@ def _slicnost_odgovora(o1: OdgovorUpitnika, o2: OdgovorUpitnika,
 
     return 1.0 if v1.strip().lower() == v2.strip().lower() else 0.0
 
-
 def _upitnik_upitnik_score(k1: Korisnik, k2: Korisnik) -> tuple[float, int]:
-    """0..40 + broj zajedničkih pitanja na temelju kojih je izračun napravljen."""
+
     u1 = _najnoviji_upitnik(k1.upitnici)
     u2 = _najnoviji_upitnik(k2.upitnici)
     if not u1 or not u2:
@@ -141,9 +137,8 @@ def _upitnik_upitnik_score(k1: Korisnik, k2: Korisnik) -> tuple[float, int]:
         return 20.0, 0
     return 40 * (ponderirana_slicnost / ukupna_tezina), len(zajednicka)
 
-
 def izracunaj_kompatibilnost(k1: Korisnik, k2: Korisnik) -> tuple[float, dict]:
-    """Vrati postotak (0..100) i breakdown po kategorijama."""
+
     profil_dio = _profil_profil_score(k1.profil, k2.profil)
 
     pref_dio_1 = _pref_profil_score(k1.preferencija, k2.profil)

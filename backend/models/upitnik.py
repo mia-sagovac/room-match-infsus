@@ -1,8 +1,6 @@
-"""Upitnik koji korisnik ispunjava + njegovi odgovori."""
 from datetime import datetime
 
 from extensions import db
-
 
 class Upitnik(db.Model):
     __tablename__ = "upitnik"
@@ -26,7 +24,6 @@ class Upitnik(db.Model):
             "verzija": self.verzija,
             "odgovori": [o.to_dict() for o in self.odgovori],
         }
-
 
 class OdgovorUpitnika(db.Model):
     __tablename__ = "odgovor_upitnika"

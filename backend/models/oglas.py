@@ -1,8 +1,6 @@
-"""Oglas za stan/sobu koji korisnik objavljuje."""
 from datetime import datetime
 
 from extensions import db
-
 
 class Oglas(db.Model):
     __tablename__ = "oglas"

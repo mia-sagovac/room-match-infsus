@@ -5,16 +5,14 @@ from flask_jwt_extended import create_access_token
 
 from extensions import db
 
-
 @pytest.fixture
 def headers(app, kreiraj_korisnika):
-    """JWT zajedno sa stvarnim korisnikom u bazi."""
+
     with app.app_context():
         k = kreiraj_korisnika(email="int@test.com")
         token = create_access_token(identity=str(k.korisnik_id))
         return {"Authorization": f"Bearer {token}",
                 "Content-Type": "application/json"}, k.korisnik_id
-
 
 class TestPitanjeKrozSveSlojeve:
 
@@ -62,7 +60,7 @@ class TestPitanjeKrozSveSlojeve:
         assert "?" in r.get_json()["error"]
 
     def test_validacija_p3_tezina_kategorija(self, client, headers):
-        """Težina 5 + lowprio kategorija → 400 sa smislenom porukom."""
+
         h, _ = headers
         r = client.post("/api/pitanja-admin", headers=h, data=json.dumps({
             "tekst_pitanja": "Provokativno pitanje?",
@@ -88,7 +86,6 @@ class TestPitanjeKrozSveSlojeve:
         r2 = client.post("/api/pitanja-admin", headers=h, data=json.dumps(payload))
         assert r2.status_code == 400
         assert "identičnim tekstom" in r2.get_json()["error"]
-
 
 class TestUpitnikMasterDetailKrozSveSlojeve:
 
@@ -191,11 +188,10 @@ class TestUpitnikMasterDetailKrozSveSlojeve:
         assert r.status_code == 400
         assert "već postoji" in r.get_json()["error"]
 
-
 class TestPunRegistracijskiFlow:
-    """Najtvrđi integracijski test — više endpointa lančano."""
 
     def test_register_login_create_pitanje_create_upitnik(self, client):
+
         r = client.post("/api/auth/register",
                         headers={"Content-Type": "application/json"},
                         data=json.dumps({

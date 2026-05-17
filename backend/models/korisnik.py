@@ -1,13 +1,6 @@
-"""Korisnik + Student/Zaposleni specijalizacije.
-
-Mapira tablice `korisnik`, `student`, `zaposleni`. ENUM `tip_korisnika`
-postoji u Postgresu, u SQLAlchemy ga predstavljamo kao String s validacijom
-na Marshmallow nivou (jednostavnije od native ENUM mapiranja).
-"""
 from datetime import date, datetime
 
 from extensions import db
-
 
 class Korisnik(db.Model):
     __tablename__ = "korisnik"
@@ -48,7 +41,6 @@ class Korisnik(db.Model):
             data["email"] = self.email
         return data
 
-
 class Student(db.Model):
     __tablename__ = "student"
 
@@ -66,7 +58,6 @@ class Student(db.Model):
             "smjer": self.smjer,
             "godina_studija": self.godina_studija,
         }
-
 
 class Zaposleni(db.Model):
     __tablename__ = "zaposleni"

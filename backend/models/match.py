@@ -1,8 +1,6 @@
-"""Match između dvojice korisnika sa izračunatim postotkom kompatibilnosti."""
 from datetime import datetime
 
 from extensions import db
-
 
 class MatchKorisnika(db.Model):
     __tablename__ = "match_korisnika"

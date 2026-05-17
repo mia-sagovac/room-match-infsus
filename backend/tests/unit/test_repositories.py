@@ -1,17 +1,8 @@
-"""Jedinični testovi sloja za pristup podacima (Repository).
-
-Sloj odgovoran: `backend/repositories/*.py`.
-Mock-iramo NIŠTA (osim baze – koja je svojim postojanjem in-memory SQLite,
-što je dovoljno za izolaciju od produkcije). Testiramo samo da repositoryji
-ispravno čitaju/pišu u bazu.
-"""
 import pytest
 
 from repositories import PitanjeRepository, UpitnikRepository
 
-
 class TestPitanjeRepository:
-    """Sloj DA (data access) — Pitanje."""
 
     def test_create_pohranjuje_pitanje(self, app):
         with app.app_context():
@@ -85,9 +76,7 @@ class TestPitanjeRepository:
             PitanjeRepository.delete(p)
             assert PitanjeRepository.get_by_id(pid) is None
 
-
 class TestUpitnikRepository:
-    """Sloj DA — Upitnik + OdgovorUpitnika."""
 
     def test_create_i_get_upitnik(self, app, kreiraj_korisnika):
         with app.app_context():

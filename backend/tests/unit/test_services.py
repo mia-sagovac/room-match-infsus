@@ -1,12 +1,3 @@
-"""Jedinični testovi poslovnog sloja (Service).
-
-Sloj odgovoran: `backend/services/*.py`.
-Mock-iramo REPOSITORY (dependency injection u konstruktor) — testiramo
-ISKLJUČIVO logiku validacije i orkestracije, ne ORM ni bazu.
-
-Servis ne smije pasti zbog DB queryja u jediničnom testu — sve interakcije
-s repositoryjem zamijenjene su MagicMock objektima.
-"""
 from unittest.mock import MagicMock
 
 import pytest
@@ -18,12 +9,11 @@ from services.pitanje_service import (
 )
 from services.upitnik_service import UpitnikService
 
-
 class TestPitanjeServiceValidacije:
-    """Provjeravamo SAMO validacijska pravila, repository je mockan."""
 
     def _service_s_mockom(self, **mock_kwargs):
         mock = MagicMock()
+
         mock.exists_with_text.return_value = False
         mock.count_by_category_and_weight.return_value = 0
         mock.get_by_id.return_value = None
@@ -104,9 +94,7 @@ class TestPitanjeServiceValidacije:
                 kategorija="navike", tip_odgovora="skala_1_5", tezina=7,
             )
 
-
 class TestUpitnikServiceValidacije:
-    """Logika master-detail upitnika sa mock repositoryjima."""
 
     def _service(self, upitnik_mock=None, pitanje_mock=None):
         u_mock = upitnik_mock or MagicMock()
@@ -157,9 +145,7 @@ class TestUpitnikServiceValidacije:
         with pytest.raises(ValidationError, match="već postoji"):
             svc.add_odgovor(upitnik_id=1, pitanje_id=1, vrijednost="3")
 
-
 class TestKompatibilnost:
-    """Čista poslovna logika algoritma kompatibilnosti — bez I/O, bez mockova."""
 
     def _korisnik_s_profilom(self, **profil_atts):
         from types import SimpleNamespace
@@ -188,9 +174,11 @@ class TestKompatibilnost:
         k2 = self._korisnik_s_profilom(urednost=3, ritam="nocna_sova",
                                        pusac=False, kucni_ljubimci=False)
         _, breakdown = izracunaj_kompatibilnost(k1, k2)
+
         assert breakdown["profil"] == 20
 
     def test_postotak_uvijek_u_rasponu_0_100(self):
+
         from types import SimpleNamespace
         k = SimpleNamespace(korisnik_id=1, profil=None, preferencija=None, upitnici=[])
         postotak, _ = izracunaj_kompatibilnost(k, k)

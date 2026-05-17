@@ -1,6 +1,4 @@
-"""Preferencije korisnika prema potencijalnom cimeru."""
 from extensions import db
-
 
 class Preferencija(db.Model):
     __tablename__ = "preferencija"

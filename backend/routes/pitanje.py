@@ -1,8 +1,3 @@
-"""Šifrarnik pitanja — CRUD za banku pitanja kompatibilnosti.
-
-Prezentacijski sloj: prima HTTP, validira ulaz, prosljeđuje servisu, vraća JSON.
-NE pristupa bazi direktno — sve ide preko servisa.
-"""
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 
@@ -11,7 +6,6 @@ from services.pitanje_service import PitanjeService, ValidationError
 bp = Blueprint("pitanje", __name__, url_prefix="/api/pitanja-admin")
 
 _service = PitanjeService()
-
 
 @bp.get("")
 @jwt_required()
@@ -24,7 +18,6 @@ def lista_pitanja():
         return jsonify(error=str(e)), 400
     return jsonify([p.to_dict() for p in pitanja])
 
-
 @bp.get("/<int:pitanje_id>")
 @jwt_required()
 def dohvati_pitanje(pitanje_id: int):
@@ -33,7 +26,6 @@ def dohvati_pitanje(pitanje_id: int):
     except ValidationError as e:
         return jsonify(error=str(e)), 404
     return jsonify(p.to_dict())
-
 
 @bp.post("")
 @jwt_required()
@@ -51,7 +43,6 @@ def kreiraj_pitanje():
         return jsonify(error=str(e)), 400
     return jsonify(p.to_dict()), 201
 
-
 @bp.put("/<int:pitanje_id>")
 @jwt_required()
 def izmijeni_pitanje(pitanje_id: int):
@@ -68,7 +59,6 @@ def izmijeni_pitanje(pitanje_id: int):
     except ValidationError as e:
         return jsonify(error=str(e)), 400
     return jsonify(p.to_dict())
-
 
 @bp.delete("/<int:pitanje_id>")
 @jwt_required()

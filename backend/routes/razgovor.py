@@ -1,4 +1,3 @@
-"""Razgovori i poruke. UC: Slanje poruke, Chat."""
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_
@@ -8,15 +7,12 @@ from models import Razgovor, Poruka, MatchKorisnika
 
 bp = Blueprint("razgovor", __name__, url_prefix="/api/razgovori")
 
-
 def _trenutni_id() -> int:
     return int(get_jwt_identity())
-
 
 def _smije_pristupiti(razgovor: Razgovor, ja_id: int) -> bool:
     m = razgovor.match
     return m is not None and ja_id in (m.korisnik1_id, m.korisnik2_id)
-
 
 @bp.get("")
 @jwt_required()
@@ -45,7 +41,6 @@ def moji_razgovori():
         })
     return jsonify(rezultat)
 
-
 @bp.get("/<int:razgovor_id>/poruke")
 @jwt_required()
 def poruke_razgovora(razgovor_id: int):
@@ -68,7 +63,6 @@ def poruke_razgovora(razgovor_id: int):
               .order_by(Poruka.vrijeme_slanja.asc())
               .all())
     return jsonify([p.to_dict() for p in poruke])
-
 
 @bp.post("/<int:razgovor_id>/poruke")
 @jwt_required()

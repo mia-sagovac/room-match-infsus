@@ -1,9 +1,3 @@
-"""Master-detail šifrarnik za Upitnike.
-
-Prefiks `/api/upitnici-admin` — odvojen od korisničke rute `/api/upitnik`
-(koja postoji za UC "Ispunjavanje upitnika"). Ovdje se administrira upitnike
-kao master-detail strukturu sa CRUD-om na header-u i pojedinačnim odgovorima.
-"""
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 
@@ -16,15 +10,13 @@ bp = Blueprint("upitnik_admin", __name__, url_prefix="/api/upitnici-admin")
 
 _service = UpitnikService()
 
-
 def _err(exc: Exception, code: int = 400):
     return jsonify(error=str(exc)), code
-
 
 @bp.get("/korisnici")
 @jwt_required()
 def korisnici_za_dropdown():
-    """Lookup endpoint za FK dropdown 'korisnik' u headeru master forme."""
+
     search = (request.args.get("search") or "").strip().lower()
     q = Korisnik.query.filter(Korisnik.aktivan.is_(True))
     if search:
@@ -38,7 +30,6 @@ def korisnici_za_dropdown():
          "prezime": k.prezime, "email": k.email}
         for k in korisnici
     ])
-
 
 @bp.get("")
 @jwt_required()
@@ -59,7 +50,6 @@ def lista_upitnika():
         rezultat.append(d)
     return jsonify(rezultat)
 
-
 @bp.get("/<int:upitnik_id>")
 @jwt_required()
 def dohvati_upitnik(upitnik_id: int):
@@ -77,7 +67,6 @@ def dohvati_upitnik(upitnik_id: int):
         }
     return jsonify(out)
 
-
 @bp.post("")
 @jwt_required()
 def kreiraj_upitnik():
@@ -94,7 +83,6 @@ def kreiraj_upitnik():
         return _err(e)
     return jsonify(u.to_dict()), 201
 
-
 @bp.put("/<int:upitnik_id>")
 @jwt_required()
 def izmijeni_upitnik(upitnik_id: int):
@@ -107,7 +95,6 @@ def izmijeni_upitnik(upitnik_id: int):
         return _err(e)
     return jsonify(u.to_dict())
 
-
 @bp.delete("/<int:upitnik_id>")
 @jwt_required()
 def obrisi_upitnik(upitnik_id: int):
@@ -116,7 +103,6 @@ def obrisi_upitnik(upitnik_id: int):
     except ValidationError as e:
         return _err(e)
     return jsonify(ok=True)
-
 
 @bp.post("/<int:upitnik_id>/odgovori")
 @jwt_required()
@@ -132,7 +118,6 @@ def dodaj_odgovor(upitnik_id: int):
         return _err(e)
     return jsonify(o.to_dict()), 201
 
-
 @bp.put("/odgovori/<int:odgovor_id>")
 @jwt_required()
 def izmijeni_odgovor(odgovor_id: int):
@@ -147,7 +132,6 @@ def izmijeni_odgovor(odgovor_id: int):
         return _err(e)
     return jsonify(o.to_dict())
 
-
 @bp.delete("/odgovori/<int:odgovor_id>")
 @jwt_required()
 def obrisi_odgovor(odgovor_id: int):
@@ -156,7 +140,6 @@ def obrisi_odgovor(odgovor_id: int):
     except ValidationError as e:
         return _err(e)
     return jsonify(ok=True)
-
 
 @bp.get("/<int:upitnik_id>/kompletnost")
 @jwt_required()

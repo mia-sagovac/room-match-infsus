@@ -1,8 +1,6 @@
-"""Profil korisnika — osobni podaci i navike."""
 from datetime import datetime
 
 from extensions import db
-
 
 class Profil(db.Model):
     __tablename__ = "profil"

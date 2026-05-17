@@ -1,8 +1,6 @@
-"""Razgovor pokrenut iz match-a."""
 from datetime import datetime
 
 from extensions import db
-
 
 class Razgovor(db.Model):
     __tablename__ = "razgovor"

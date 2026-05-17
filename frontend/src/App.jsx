@@ -12,6 +12,8 @@ import Questionnaire from "./pages/Questionnaire.jsx";
 import Matches from "./pages/Matches.jsx";
 import Chat from "./pages/Chat.jsx";
 import Ads from "./pages/Ads.jsx";
+import Pitanja from "./pages/Pitanja.jsx";
+import UpitnikAdmin from "./pages/UpitnikAdmin.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Help from "./pages/Help.jsx";
 import Footer from "./pages/components/Footer.jsx";
@@ -39,7 +41,9 @@ function Nav() {
     { to: "/questionnaire", label: "Upitnik", icon: iconClipboard },
     { to: "/matches", label: "Cimeri", icon: iconHands },
     { to: "/chat", label: "Razgovori", icon: iconChats },
-    { to: "/ads", label: "Oglasi", icon: iconHouse },
+      { to: "/ads", label: "Oglasi", icon: iconHouse },
+      { to: "/pitanja", label: "Pitanja" },
+      { to: "/upitnici-admin", label: "Upitnici" },
   ];
 
   return (
@@ -104,6 +108,8 @@ export default function App() {
           <Route path="/chat" element={<Protected><Chat /></Protected>} />
           <Route path="/chat/:razgovorId" element={<Protected><Chat /></Protected>} />
           <Route path="/ads" element={<Protected><Ads /></Protected>} />
+            <Route path="/pitanja" element={<Protected><Pitanja /></Protected>} />
+            <Route path="/upitnici-admin" element={<Protected><UpitnikAdmin /></Protected>} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/help" element={<Help />} />
           <Route path="*" element={<Navigate to="/" replace />} />

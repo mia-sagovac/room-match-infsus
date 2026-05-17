@@ -1,8 +1,3 @@
-"""Poslovni sloj za Pitanje (šifrarnik).
-
-Sadrži složena validacijska pravila — pozivaju ih i routes i tests.
-Repository zovu samo servisi (routes ne pristupaju repositoryjima direktno).
-"""
 from __future__ import annotations
 
 from extensions import db
@@ -20,26 +15,14 @@ DOZVOLJENI_TIPOVI_ODGOVORA = {"skala_1_5", "da_ne", "tekst", "visestruki_izbor"}
 
 MAX_PITANJA_PO_KATEGORIJI_I_TEZINI = 5
 
-
 class ValidationError(Exception):
-    """Poslovna validacija nije prošla. Sadrži human-readable poruku."""
+
     pass
 
-
 class PitanjeService:
-    """Operacije nad pitanjima sa složenom validacijom.
-
-    Validacijska pravila (KOMPLEKSNA, ne svode se na 'je li popunjeno'):
-      P1. Tekst mora završiti znakom '?' (semantičko pravilo, ne raspon).
-      P2. Tekst mora biti jedinstven case-insensitive (poslovno pravilo
-          koje ovisi o drugim recordima u bazi).
-      P3. Težina ≥ 4 dozvoljena je SAMO za visokoprioritetne kategorije
-          (cross-field rule između 'tezina' i 'kategorija').
-      P4. Maksimalno 5 pitanja iste kombinacije (kategorija, težina) —
-          dakle ovisno o stanju u bazi, ne o jednom recordu.
-    """
 
     def __init__(self, repository: PitanjeRepository | None = None):
+
         self.repo = repository or PitanjeRepository()
 
     def list_pitanja(self, only_active: bool = True,
@@ -95,7 +78,7 @@ class PitanjeService:
 
     @staticmethod
     def _validate_polja(tekst: str, kat: str, tip: str, tez: int) -> None:
-        """Osnovne provjere koje ne moraju u bazu — bacaju ValidationError."""
+
         if not tekst or not tekst.strip():
             raise ValidationError("Tekst pitanja je obavezan.")
         if len(tekst) > 1000:
@@ -124,6 +107,7 @@ class PitanjeService:
             )
 
     def _validate_jedinstven_tekst(self, tekst: str, exclude_id: int | None) -> None:
+
         if self.repo.exists_with_text(tekst, exclude_id=exclude_id):
             raise ValidationError(
                 "Pitanje s identičnim tekstom (ignorirajući velika/mala slova) već postoji."
@@ -131,6 +115,7 @@ class PitanjeService:
 
     def _validate_kapacitet_kategorije(self, kategorija: str, tezina: int,
                                        postojeci_id: int | None) -> None:
+
         broj = self.repo.count_by_category_and_weight(kategorija, tezina)
         if postojeci_id is not None:
             p = self.repo.get_by_id(postojeci_id)

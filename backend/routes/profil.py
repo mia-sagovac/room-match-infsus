@@ -1,4 +1,3 @@
-"""Profil i preferencije — UC: Uređivanje profila."""
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -18,17 +17,14 @@ PREF_POLJA = {
 
 DOZVOLJENI_RITAM = {"rana_ptica", "nocna_sova", "fleksibilno"}
 
-
 def _trenutni_id() -> int:
     return int(get_jwt_identity())
-
 
 @bp.get("/profil")
 @jwt_required()
 def moj_profil():
     profil = Profil.query.filter_by(korisnik_id=_trenutni_id()).first()
     return jsonify(profil.to_dict() if profil else None)
-
 
 @bp.put("/profil")
 @jwt_required()
@@ -55,13 +51,11 @@ def azuriraj_profil():
     db.session.commit()
     return jsonify(profil.to_dict())
 
-
 @bp.get("/preferencija")
 @jwt_required()
 def moja_preferencija():
     pref = Preferencija.query.filter_by(korisnik_id=_trenutni_id()).first()
     return jsonify(pref.to_dict() if pref else None)
-
 
 @bp.put("/preferencija")
 @jwt_required()

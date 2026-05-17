@@ -1,7 +1,3 @@
-"""Autentifikacija — registracija, prijava, dohvat trenutnog korisnika.
-
-Pokriva UC: Registracija korisnika, Prijava (model stanja S1→S2).
-"""
 import re
 
 from flask import Blueprint, request, jsonify
@@ -15,15 +11,13 @@ bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
 DOZVOLJENI_TIPOVI = {"student", "zaposleni", "ostalo"}
 
-
 def _validiraj_lozinku(lozinka: str) -> str | None:
-    """Vraća poruku greške ili None ako je lozinka dovoljno jaka."""
+
     if len(lozinka) < 8:
         return "Lozinka mora imati barem 8 znakova."
     if not re.search(r"[A-Za-z]", lozinka) or not re.search(r"\d", lozinka):
         return "Lozinka mora sadržavati slova i brojeve."
     return None
-
 
 @bp.post("/register")
 def register():
@@ -90,7 +84,6 @@ def register():
     token = create_access_token(identity=str(korisnik.korisnik_id))
     return jsonify(access_token=token, korisnik=korisnik.to_dict(include_email=True)), 201
 
-
 @bp.post("/login")
 def login():
     data = request.get_json(silent=True) or {}
@@ -109,7 +102,6 @@ def login():
 
     token = create_access_token(identity=str(korisnik.korisnik_id))
     return jsonify(access_token=token, korisnik=korisnik.to_dict(include_email=True)), 200
-
 
 @bp.get("/me")
 @jwt_required()

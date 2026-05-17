@@ -1,7 +1,3 @@
-"""Poslovni sloj za Upitnik (master) + OdgovorUpitnika (detail).
-
-Implementira logiku master-detail ekrana sa složenim cross-entity validacijama.
-"""
 from __future__ import annotations
 
 from extensions import db
@@ -9,23 +5,7 @@ from models import Upitnik, OdgovorUpitnika, Korisnik, Pitanje
 from repositories import UpitnikRepository, PitanjeRepository
 from services.pitanje_service import ValidationError
 
-
 class UpitnikService:
-    """Operacije nad upitnikom i njegovim odgovorima.
-
-    Složena validacijska pravila:
-      U1. Format vrijednosti odgovora mora odgovarati `tip_odgovora` pripadnog
-          pitanja:
-              - skala_1_5: cjelobrojni 1..5
-              - da_ne: 'da' ili 'ne' (case-insensitive)
-              - tekst: bilo koji neprazan tekst do 500 znakova
-              - visestruki_izbor: neprazan string
-          → cross-entity rule (odgovor mora znati za tip svog pitanja).
-      U2. Unutar jednog upitnika nije dozvoljeno više odgovora na ISTO pitanje.
-      U3. Pri završetku upitnika svako AKTIVNO pitanje težine ≥ 4 mora biti
-          odgovoreno (kompletnost upitnika).
-      U4. Korisnik na upitniku mora postojati i biti aktivan.
-    """
 
     def __init__(self,
                  upitnik_repo: UpitnikRepository | None = None,
@@ -46,7 +26,7 @@ class UpitnikService:
 
     def create_upitnik(self, *, korisnik_id: int,
                        odgovori: list[dict] | None = None) -> Upitnik:
-        """Stvori novi upitnik s opcionalnim odgovorima u jednoj transakciji."""
+
         self._validate_korisnik(korisnik_id)
 
         verzija = self.repo.next_version_for(korisnik_id)
@@ -132,7 +112,7 @@ class UpitnikService:
         db.session.commit()
 
     def provjeri_kompletnost(self, upitnik_id: int) -> dict:
-        """Provjeri ima li upitnik odgovore na sva pitanja težine ≥ 4."""
+
         upitnik = self.get_upitnik(upitnik_id)
         obavezna = [p for p in self.pitanje_repo.list_all(only_active=True)
                     if p.tezina >= 4]
@@ -173,7 +153,7 @@ class UpitnikService:
 
     @staticmethod
     def _validate_format_odgovora(vrijednost, pitanje: Pitanje) -> None:
-        """U1: format vrijednosti mora odgovarati tip_odgovora pitanja."""
+
         if vrijednost is None or str(vrijednost).strip() == "":
             raise ValidationError(
                 f"Vrijednost odgovora za pitanje {pitanje.pitanje_id} ne smije biti prazna."

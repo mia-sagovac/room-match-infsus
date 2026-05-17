@@ -1,4 +1,3 @@
-"""Oglasi za stanove/sobe — CRUD."""
 from datetime import date
 
 from flask import Blueprint, request, jsonify
@@ -9,15 +8,13 @@ from models import Oglas
 
 bp = Blueprint("oglas", __name__, url_prefix="/api/oglasi")
 
-
 def _trenutni_id() -> int:
     return int(get_jwt_identity())
-
 
 @bp.get("")
 @jwt_required()
 def lista_oglasa():
-    """Aktivni oglasi s opcionalnim filterima."""
+
     args = request.args
     q = Oglas.query.filter_by(aktivan=True)
 
@@ -36,7 +33,6 @@ def lista_oglasa():
 
     oglasi = q.order_by(Oglas.kreiran.desc()).limit(100).all()
     return jsonify([o.to_dict() for o in oglasi])
-
 
 @bp.post("")
 @jwt_required()
@@ -80,11 +76,10 @@ def kreiraj_oglas():
     db.session.commit()
     return jsonify(oglas.to_dict()), 201
 
-
 @bp.delete("/<int:oglas_id>")
 @jwt_required()
 def obrisi_oglas(oglas_id: int):
-    """Soft delete — postavi aktivan = False (vlasnik samo)."""
+
     oglas = db.session.get(Oglas, oglas_id)
     if not oglas:
         return jsonify(error="Oglas ne postoji."), 404

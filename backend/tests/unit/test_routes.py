@@ -1,13 +1,3 @@
-"""Jedinični testovi prezentacijskog sloja (Routes/Controllers).
-
-Sloj odgovoran: `backend/routes/*.py`.
-Mock-iramo SERVIS preko `monkeypatch` — testiramo SAMO da ruta:
-  - mapira HTTP request → service call sa pravim parametrima
-  - mapira service rezultat ↔ HTTP response (status code, JSON shape)
-  - hvata ValidationError → 400
-
-Servis se ne izvršava (mock), baza se ne dira.
-"""
 import json
 from unittest.mock import MagicMock
 
@@ -16,21 +6,14 @@ from flask_jwt_extended import create_access_token
 
 from services.pitanje_service import ValidationError
 
-
 @pytest.fixture
 def auth_header(app):
-    """JWT bez stvaranja stvarnog korisnika — dovoljno je da postoji token.
 
-    Za jedinične testove ruta NE TREBAMO stvarnog korisnika u bazi; jedino
-    što testiramo je da Flask-JWT-Extended prihvati token i da ruta odgovori.
-    """
     with app.app_context():
         token = create_access_token(identity="1")
     return {"Authorization": f"Bearer {token}"}
 
-
 class TestPitanjeRoutes:
-    """Testira rute šifrarnika sa mock servisom."""
 
     def test_get_lista_vraca_servis_rezultat(self, app, client, auth_header,
                                              monkeypatch):
@@ -141,7 +124,6 @@ class TestPitanjeRoutes:
     def test_zahtijeva_autentifikaciju(self, client):
         resp = client.get("/api/pitanja-admin")
         assert resp.status_code == 401
-
 
 class TestUpitnikAdminRoutes:
 
