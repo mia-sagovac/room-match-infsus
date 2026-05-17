@@ -49,10 +49,11 @@ export default function Chat() {
     return () => clearInterval(id);
   }, [razgovorId]);
 
-  // Auto-scroll dolje
+  // auto-scroll dolje - ipak ne treba
+  /*
   useEffect(() => {
     krajChata.current?.scrollIntoView({ behavior: "smooth" });
-  }, [poruke]);
+  }, [poruke]);*/
 
   const posalji = async (e) => {
     e.preventDefault();
@@ -62,8 +63,16 @@ export default function Chat() {
       setPoruke([...poruke, data]);
       setNovaPoruka("");
     } catch (err) {
-      setError(err.response?.data?.error || "Greška pri slanju.");
+      setError(err.response?.data?.error || "Greška pri slanjem.");
     }
+  };
+
+  const imeSugovornika = (razgovor) => {
+    const match = matchevi.find((m) => String(m.razgovor_id) === String(razgovor.razgovor_id));
+    if (match?.drugi_korisnik) {
+      return `${match.drugi_korisnik.ime} ${match.drugi_korisnik.prezime}`;
+    }
+    return `Razgovor #${razgovor.razgovor_id}`;
   };
 
   // odgovri na match (pass/fail)
@@ -100,7 +109,7 @@ export default function Chat() {
             }}
             onClick={() => navigate(`/chat/${r.razgovor_id}`)}
           >
-            <strong>Razgovor #{r.razgovor_id}</strong>
+            <strong>{imeSugovornika(r)}</strong>
             <div className="muted" style={{ fontSize: "0.85rem" }}>
               Kompatibilnost: {r.postotak_kompatibilnosti}%
             </div>

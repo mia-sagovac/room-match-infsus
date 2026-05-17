@@ -5,6 +5,8 @@ import iconClipboard from "./pages/icons/clipboard.svg";
 import iconHands from "./pages/icons/hands.svg";
 import iconChats from "./pages/icons/chats.svg";
 import iconHouse from "./pages/icons/house.svg";
+import iconQuestion from "./pages/icons/question.svg";
+import iconPoll from "./pages/icons/poll.svg";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -42,8 +44,8 @@ function Nav() {
     { to: "/matches", label: "Cimeri", icon: iconHands },
     { to: "/chat", label: "Razgovori", icon: iconChats },
       { to: "/ads", label: "Oglasi", icon: iconHouse },
-      { to: "/pitanja", label: "Pitanja" },
-      { to: "/upitnici-admin", label: "Upitnici" },
+      { to: "/pitanja", label: "Pitanja", icon: iconQuestion },
+      { to: "/upitnici-admin", label: "Upitnici", icon: iconPoll },
   ];
 
   return (
