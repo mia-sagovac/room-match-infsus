@@ -94,14 +94,6 @@ export default function Pitanja() {
         <button onClick={startNew} disabled={editing !== null}>Novo pitanje</button>
       </div>
 
-      <p className="muted" style={{ marginTop: "-0.5rem" }}>
-        Šifrarnik pitanja koja čine bazu upitnika kompatibilnosti.
-        Validacije: tekst mora završiti s <code>?</code>, jedinstven case-insensitive,
-        težina ≥ 4 dozvoljena samo za visokoprioritetne kategorije
-        (<code>urednost, pusenje, ritam_spavanja</code>), max 5 pitanja po
-        kombinaciji kategorije i težine.
-      </p>
-
       {msg.text && <p className={msg.type}>{msg.text}</p>}
 
       {/* Forma za novo / uređivanje */}

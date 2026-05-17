@@ -73,7 +73,7 @@ export default function Questionnaire() {
       <h2>Upitnik kompatibilnosti</h2>
       <p className="muted">
         Odgovori se koriste za izračun kompatibilnosti s drugim korisnicima. Možeš ih
-        u bilo kojem trenutku ažurirati — sustav sprema novu verziju upitnika.
+        u bilo kojem trenutku ažurirati, sustav sprema novu verziju upitnika.
       </p>
 
       {msg.text && <p className={msg.type}>{msg.text}</p>}
@@ -83,19 +83,19 @@ export default function Questionnaire() {
           <div key={p.pitanje_id} className="card">
             <strong>{p.tekst_pitanja}</strong>
             <p className="muted" style={{ margin: "0.25rem 0 0.75rem" }}>
-              Kategorija: {p.kategorija} · Težina: {p.tezina}/5
+              Kategorija: {p.kategorija}, Težina: {p.tezina}/5
             </p>
 
             {p.tip_odgovora === "skala_1_5" && (
               <select value={odgovori[p.pitanje_id] ?? ""} onChange={(e) => set(p.pitanje_id, e.target.value)}>
-                <option value="">—</option>
+                <option value="">-</option>
                 {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
               </select>
             )}
 
             {p.tip_odgovora === "da_ne" && (
               <select value={odgovori[p.pitanje_id] ?? ""} onChange={(e) => set(p.pitanje_id, e.target.value)}>
-                <option value="">—</option>
+                <option value="">-</option>
                 <option value="da">Da</option>
                 <option value="ne">Ne</option>
               </select>

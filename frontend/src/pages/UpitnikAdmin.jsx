@@ -141,11 +141,6 @@ export default function UpitnikAdmin() {
   return (
     <>
       <h2>Master-Detail: Upitnici</h2>
-      <p className="muted" style={{ marginTop: "-0.5rem" }}>
-        Master (gore): zaglavlje upitnika sa <strong>korisnik FK dropdown</strong>.
-        Detail (dolje): odgovori sa <strong>pitanje FK dropdown</strong> i
-        vrijednošću validiranom prema tipu pitanja.
-      </p>
 
       {msg.text && <p className={msg.type}>{msg.text}</p>}
 

@@ -142,17 +142,13 @@ export default function Matches() {
               </h3>
               <p className="muted" style={{ margin: "0.25rem 0" }}>
                 {r.profil?.grad}{r.profil?.kvart ? `, ${r.profil.kvart}` : ""}
-                {r.profil?.dob ? ` · ${r.profil.dob} god.` : ""}
-                {r.profil?.ritam ? ` · ${r.profil.ritam.replace("_", " ")}` : ""}
-                {r.profil?.urednost ? ` · urednost ${r.profil.urednost}/5` : ""}
-                {r.profil?.pusac === true ? " · pušač" : ""}
-                {r.profil?.kucni_ljubimci === true ? " · ljubimci" : ""}
+                {r.profil?.dob ? `, ${r.profil.dob} god.` : ""}
+                {r.profil?.ritam ? `, ${r.profil.ritam.replace("_", " ")}` : ""}
+                {r.profil?.urednost ? `, urednost ${r.profil.urednost}/5` : ""}
+                {r.profil?.pusac === true ? ", pušač" : ""}
+                {r.profil?.kucni_ljubimci === true ? ", ljubimci" : ""}
               </p>
               {r.profil?.bio && <p style={{ margin: "0.5rem 0" }}>{r.profil.bio}</p>}
-              <p className="muted" style={{ fontSize: "0.8rem", margin: 0 }}>
-                Profil: {r.detalji.profil}/30 · Pref→: {r.detalji.pref_k1_na_k2}/15 · ←Pref: {r.detalji.pref_k2_na_k1}/15 · Upitnik: {r.detalji.upitnik}/40
-                {" "}({r.detalji.zajednicka_pitanja} zajedničkih pitanja)
-              </p>
             </div>
             <button onClick={() => matchSe(r.korisnik.korisnik_id)}>Predloži match</button>
           </div>

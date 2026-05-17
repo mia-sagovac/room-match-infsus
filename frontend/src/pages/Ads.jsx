@@ -183,9 +183,9 @@ export default function Ads() {
               <h3 style={{ margin: 0 }}>{o.naslov}</h3>
               <p className="muted" style={{ margin: "0.25rem 0" }}>
                 {o.grad}{o.kvart ? `, ${o.kvart}` : ""}
-                {o.adresa ? ` · ${o.adresa}` : ""}
-                {o.broj_soba ? ` · ${o.broj_soba} sobe` : ""}
-                {o.dostupno_od ? ` · od ${o.dostupno_od}` : ""}
+                {o.adresa ? `, ${o.adresa}` : ""}
+                {o.broj_soba ? `, ${o.broj_soba} sobe` : ""}
+                {o.dostupno_od ? `, od ${o.dostupno_od}` : ""}
               </p>
               {o.opis && <p style={{ margin: "0.5rem 0" }}>{o.opis}</p>}
               <strong>{o.cijena.toFixed(2)} €</strong>
