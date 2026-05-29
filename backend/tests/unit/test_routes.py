@@ -20,7 +20,7 @@ class TestPitanjeRoutes:
         mock_pitanje = MagicMock()
         mock_pitanje.to_dict.return_value = {
             "pitanje_id": 1, "tekst_pitanja": "P?",
-            "kategorija": "buka", "tip_odgovora": "skala_1_5",
+            "kategorija": "navike", "tip_odgovora": "skala_1_5",
             "tezina": 2, "aktivno": True,
         }
         mock_svc = MagicMock()
@@ -60,7 +60,7 @@ class TestPitanjeRoutes:
             headers={**auth_header, "Content-Type": "application/json"},
             data=json.dumps({
                 "tekst_pitanja": "Pitanje?",
-                "kategorija": "buka", "tip_odgovora": "skala_1_5",
+                "kategorija": "navike", "tip_odgovora": "skala_1_5",
                 "tezina": 2,
             }),
         )
@@ -79,7 +79,7 @@ class TestPitanjeRoutes:
             "/api/pitanja-admin",
             headers={**auth_header, "Content-Type": "application/json"},
             data=json.dumps({
-                "tekst_pitanja": "P?", "kategorija": "buka",
+                "tekst_pitanja": "P?", "kategorija": "navike",
                 "tip_odgovora": "skala_1_5", "tezina": 2,
             }),
         )
@@ -154,7 +154,7 @@ class TestUpitnikAdminRoutes:
         assert resp.status_code == 400
 
     def test_post_odgovora_prosljeduje_servisu(self, app, client, auth_header,
-                                                monkeypatch):
+                                               monkeypatch):
         mock_o = MagicMock()
         mock_o.to_dict.return_value = {"odgovor_id": 1, "vrijednost": "3"}
         mock_svc = MagicMock()

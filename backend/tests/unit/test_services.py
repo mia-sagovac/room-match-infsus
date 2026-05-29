@@ -26,7 +26,7 @@ class TestPitanjeServiceValidacije:
         with pytest.raises(ValidationError, match="završiti upitnikom"):
             svc.create_pitanje(
                 tekst_pitanja="Voliš li tišinu",
-                kategorija="buka", tip_odgovora="skala_1_5", tezina=2,
+                kategorija="navike", tip_odgovora="skala_1_5", tezina=2,
             )
 
     def test_prihvaca_tekst_s_upitnikom(self, monkeypatch):
@@ -36,7 +36,7 @@ class TestPitanjeServiceValidacije:
 
         svc.create_pitanje(
             tekst_pitanja="Voliš li tišinu?",
-            kategorija="buka", tip_odgovora="skala_1_5", tezina=2,
+            kategorija="navike", tip_odgovora="skala_1_5", tezina=2,
         )
         mock.create.assert_called_once()
 
@@ -45,7 +45,7 @@ class TestPitanjeServiceValidacije:
         with pytest.raises(ValidationError, match="identičnim tekstom"):
             svc.create_pitanje(
                 tekst_pitanja="Voliš li tišinu?",
-                kategorija="buka", tip_odgovora="skala_1_5", tezina=2,
+                kategorija="navike", tip_odgovora="skala_1_5", tezina=2,
             )
 
     def test_odbija_visoku_tezinu_za_lowprio_kategoriju(self):
@@ -53,7 +53,7 @@ class TestPitanjeServiceValidacije:
         with pytest.raises(ValidationError, match="visokoprioritetne"):
             svc.create_pitanje(
                 tekst_pitanja="Voliš li tišinu?",
-                kategorija="buka",
+                kategorija="navike",
                 tip_odgovora="skala_1_5", tezina=5,
             )
 
@@ -63,7 +63,7 @@ class TestPitanjeServiceValidacije:
         monkeypatch.setattr("services.pitanje_service.db.session.commit", lambda: None)
         svc.create_pitanje(
             tekst_pitanja="Smeta li ti nered?",
-            kategorija="urednost",
+            kategorija="cistoca",
             tip_odgovora="skala_1_5", tezina=5,
         )
         mock.create.assert_called_once()

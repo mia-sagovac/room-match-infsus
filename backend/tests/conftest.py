@@ -65,7 +65,7 @@ def kreiraj_korisnika(session):
 def kreiraj_pitanje(session):
 
     def _factory(tekst: str = "Voliš li tišinu navečer?",
-                 kategorija: str = "buka", tip: str = "skala_1_5",
+                 kategorija: str = "navike", tip: str = "skala_1_5",
                  tezina: int = 3, aktivno: bool = True) -> Pitanje:
         p = Pitanje(tekst_pitanja=tekst, kategorija=kategorija,
                     tip_odgovora=tip, tezina=tezina, aktivno=aktivno)

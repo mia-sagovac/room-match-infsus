@@ -21,7 +21,7 @@ class TestPitanjeKrozSveSlojeve:
 
         r = client.post("/api/pitanja-admin", headers=h, data=json.dumps({
             "tekst_pitanja": "Voliš li tišinu navečer?",
-            "kategorija": "buka",
+            "kategorija": "navike",
             "tip_odgovora": "skala_1_5",
             "tezina": 2,
         }))
@@ -52,7 +52,7 @@ class TestPitanjeKrozSveSlojeve:
         h, _ = headers
         r = client.post("/api/pitanja-admin", headers=h, data=json.dumps({
             "tekst_pitanja": "Bez upitnika",
-            "kategorija": "buka",
+            "kategorija": "navike",
             "tip_odgovora": "skala_1_5",
             "tezina": 2,
         }))
@@ -64,7 +64,7 @@ class TestPitanjeKrozSveSlojeve:
         h, _ = headers
         r = client.post("/api/pitanja-admin", headers=h, data=json.dumps({
             "tekst_pitanja": "Provokativno pitanje?",
-            "kategorija": "buka",
+            "kategorija": "navike",
             "tip_odgovora": "skala_1_5",
             "tezina": 5,
         }))
@@ -75,7 +75,7 @@ class TestPitanjeKrozSveSlojeve:
         h, _ = headers
         payload = {
             "tekst_pitanja": "Voliš li psećeg lika?",
-            "kategorija": "ljubimci",
+            "kategorija": "ostalo",
             "tip_odgovora": "da_ne",
             "tezina": 2,
         }
@@ -96,7 +96,7 @@ class TestUpitnikMasterDetailKrozSveSlojeve:
         with app.app_context():
             drugi_korisnik = kreiraj_korisnika(email="drugi@test.com")
             p1 = kreiraj_pitanje(tekst="Voliš li mir?", tip="skala_1_5")
-            p2 = kreiraj_pitanje(tekst="Pušiš li?", tip="da_ne", kategorija="pusenje")
+            p2 = kreiraj_pitanje(tekst="Pušiš li?", tip="da_ne", kategorija="zivotni_stil")
             korisnik_id = drugi_korisnik.korisnik_id
             p1_id, p2_id = p1.pitanje_id, p2.pitanje_id
 
@@ -108,15 +108,15 @@ class TestUpitnikMasterDetailKrozSveSlojeve:
 
         r = client.post(f"/api/upitnici-admin/{upitnik_id}/odgovori",
                         headers=h, data=json.dumps({
-                            "pitanje_id": p1_id, "vrijednost": "4",
-                        }))
+                "pitanje_id": p1_id, "vrijednost": "4",
+            }))
         assert r.status_code == 201
         odg1_id = r.get_json()["odgovor_id"]
 
         r = client.post(f"/api/upitnici-admin/{upitnik_id}/odgovori",
                         headers=h, data=json.dumps({
-                            "pitanje_id": p2_id, "vrijednost": "ne",
-                        }))
+                "pitanje_id": p2_id, "vrijednost": "ne",
+            }))
         assert r.status_code == 201
 
         r = client.get(f"/api/upitnici-admin/{upitnik_id}", headers=h)
@@ -158,8 +158,8 @@ class TestUpitnikMasterDetailKrozSveSlojeve:
 
         r = client.post(f"/api/upitnici-admin/{upitnik_id}/odgovori",
                         headers=h, data=json.dumps({
-                            "pitanje_id": pid, "vrijednost": "tri",
-                        }))
+                "pitanje_id": pid, "vrijednost": "tri",
+            }))
         assert r.status_code == 400
         assert "broj 1–5" in r.get_json()["error"]
 
@@ -177,14 +177,14 @@ class TestUpitnikMasterDetailKrozSveSlojeve:
 
         r = client.post(f"/api/upitnici-admin/{upitnik_id}/odgovori",
                         headers=h, data=json.dumps({
-                            "pitanje_id": pid, "vrijednost": "3",
-                        }))
+                "pitanje_id": pid, "vrijednost": "3",
+            }))
         assert r.status_code == 201
 
         r = client.post(f"/api/upitnici-admin/{upitnik_id}/odgovori",
                         headers=h, data=json.dumps({
-                            "pitanje_id": pid, "vrijednost": "5",
-                        }))
+                "pitanje_id": pid, "vrijednost": "5",
+            }))
         assert r.status_code == 400
         assert "već postoji" in r.get_json()["error"]
 

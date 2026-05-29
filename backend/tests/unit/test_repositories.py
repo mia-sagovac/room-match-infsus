@@ -8,7 +8,7 @@ class TestPitanjeRepository:
         with app.app_context():
             p = PitanjeRepository.create(
                 tekst_pitanja="Voliš li tišinu?",
-                kategorija="buka",
+                kategorija="navike",
                 tip_odgovora="skala_1_5",
                 tezina=3,
             )
@@ -51,13 +51,13 @@ class TestPitanjeRepository:
 
     def test_count_by_category_and_weight(self, app, kreiraj_pitanje):
         with app.app_context():
-            kreiraj_pitanje(tekst="P1?", kategorija="urednost", tezina=4)
-            kreiraj_pitanje(tekst="P2?", kategorija="urednost", tezina=4)
-            kreiraj_pitanje(tekst="P3?", kategorija="urednost", tezina=3)
+            kreiraj_pitanje(tekst="P1?", kategorija="cistoca", tezina=4)
+            kreiraj_pitanje(tekst="P2?", kategorija="cistoca", tezina=4)
+            kreiraj_pitanje(tekst="P3?", kategorija="cistoca", tezina=3)
 
-            assert PitanjeRepository.count_by_category_and_weight("urednost", 4) == 2
-            assert PitanjeRepository.count_by_category_and_weight("urednost", 3) == 1
-            assert PitanjeRepository.count_by_category_and_weight("buka", 4) == 0
+            assert PitanjeRepository.count_by_category_and_weight("cistoca", 4) == 2
+            assert PitanjeRepository.count_by_category_and_weight("cistoca", 3) == 1
+            assert PitanjeRepository.count_by_category_and_weight("navike", 4) == 0
 
     def test_update_mijenja_polja(self, app, kreiraj_pitanje):
         with app.app_context():
