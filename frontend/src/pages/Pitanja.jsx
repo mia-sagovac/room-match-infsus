@@ -90,15 +90,9 @@ export default function Pitanja() {
     return (
         <>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h2>Šifrarnik: Pitanja</h2>
+                <h2>Šifrarnik</h2>
                 <button onClick={startNew} disabled={editing !== null}>Novo pitanje</button>
             </div>
-
-            <p className="muted" style={{ marginTop: "-0.5rem" }}>
-                Validacije: tekst mora završiti s <code>?</code>, jedinstven case-insensitive,
-                težina ≥ 4 dozvoljena samo za visokoprioritetne kategorije
-                (<code>cistoca, zivotni_stil</code>), max 5 pitanja po kombinaciji kategorije i težine.
-            </p>
 
             {msg.text && <p className={msg.type}>{msg.text}</p>}
 
