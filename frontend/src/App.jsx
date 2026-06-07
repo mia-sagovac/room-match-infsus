@@ -19,6 +19,7 @@ import UpitnikAdmin from "./pages/UpitnikAdmin.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Help from "./pages/Help.jsx";
 import Footer from "./pages/components/Footer.jsx";
+import ProcessView from "./pages/ProcessView.jsx";
 
 function isAuthed() {
   return !!localStorage.getItem("token");
@@ -112,6 +113,7 @@ export default function App() {
           <Route path="/ads" element={<Protected><Ads /></Protected>} />
             <Route path="/pitanja" element={<Protected><Pitanja /></Protected>} />
             <Route path="/upitnici-admin" element={<Protected><UpitnikAdmin /></Protected>} />
+          <Route path="/proces" element={<Protected><ProcessView /></Protected>} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/help" element={<Help />} />
           <Route path="*" element={<Navigate to="/" replace />} />

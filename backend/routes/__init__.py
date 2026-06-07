@@ -6,8 +6,9 @@ from .razgovor import bp as razgovor_bp
 from .oglas import bp as oglas_bp
 from .pitanje import bp as pitanje_bp
 from .upitnik_admin import bp as upitnik_admin_bp
+from .proces import bp as proces_bp
 
 ALL_BLUEPRINTS = [
     auth_bp, profil_bp, upitnik_bp, match_bp, razgovor_bp, oglas_bp,
-    pitanje_bp, upitnik_admin_bp,
+    pitanje_bp, upitnik_admin_bp, proces_bp
 ]
