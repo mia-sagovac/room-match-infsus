@@ -93,7 +93,11 @@ export default function ProcessView() {
         }
 
         if (naziv === "Popuni profil") {
-            return <button onClick={() => completeTask()}>Profil popunjen</button>;
+            return (
+                <button onClick={() => completeTask({ profil_popunjen: { value: true, type: "Boolean" } })}>
+                    Profil popunjen
+                </button>
+            );
         }
 
         if (naziv === "Ispuni upitnik") {
