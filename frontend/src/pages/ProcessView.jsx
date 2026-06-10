@@ -22,6 +22,7 @@ export default function ProcessView() {
     }, []);
 
     const pokreniProces = async () => {
+        localStorage.removeItem("process_instance_id");
         setPoruka("");
         const res = await api.post("/proces/pokreni");
         const id = res.data.process_instance_id;
@@ -83,7 +84,7 @@ export default function ProcessView() {
             return (
                 <div>
                     <button onClick={() => completeTask({ profil_popunjen: { value: true, type: "Boolean" } })}>
-                        Profil popunjen -> dalje
+                        Profil popunjen - dalje
                     </button>
                     <button onClick={() => completeTask({ profil_popunjen: { value: false, type: "Boolean" } })}>
                         Profil nije popunjen
@@ -148,7 +149,7 @@ export default function ProcessView() {
         }
 
         if (naziv === "Otvori chat") {
-            return <button onClick={() => completeTask()}>Otvori chat -> zavrsi</button>;
+            return <button onClick={() => completeTask()}>Otvori chat - zavrsi</button>;
         }
 
         return (
